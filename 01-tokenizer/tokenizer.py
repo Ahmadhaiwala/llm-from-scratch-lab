@@ -30,6 +30,14 @@ class Tokenizer:
 
         return "".join(chars)
     
+    def get_pair_frequency(self,tokens):
+
+        for i in token:
+            for j in i:
+                
+
+
+    
 
 #testing
 tokenizer=Tokenizer()
