@@ -1,18 +1,32 @@
+# So these is for learning purpose its just 
+# a naive algo just for learning in future I will
+# surely implement the rust base updated scalable code
+
+#this is basic implementation of bpe algorithm
+
 class Tokenizer:
     def __init__(self):
         self.vocab = {}
         self.inverse_vocab = {}
 
-    def train(self, text):
-        counter = 0
+    def train(self, text,num_merges=10):
+        tokens=list(text)
+        for _ in range(num_merges):
+            pair_frequecny=self.get_pair_frequency(tokens)
+            most_frequent_pair=self.get_most_frequent_pair(pair_frequecny)
+            print("Merging:", most_frequent_pair)
+            tokens=self.merge_pair(tokens,most_frequent_pair)
+            print("Tokens:", tokens)
 
-        for char in text:
-            if char not in self.vocab:
-                self.vocab[char] = counter
-                counter += 1
+        counter=0
+        for token in tokens:
+            if token not in self.vocab:
+                self.vocab[token]=counter
+                counter+=1
+        for token in self.vocab:
+            self.inverse_vocab[self.vocab[token]] = token
 
-        for char in self.vocab:
-            self.inverse_vocab[self.vocab[char]] = char
+
 
     def encode(self, text):
         ids=[]
@@ -29,28 +43,20 @@ class Tokenizer:
             chars.append(self.inverse_vocab[id])
 
         return "".join(chars)
-    #_________________________________________________________
-    #you know what pair frequency is kind of autocompletion tool
-    # which is again the most basic thing in the starting of our ai
-    #___________________________________________________________
-    #we will take the pair that appear most frequently and merge it
-    #and repeat the process
-    #
-    
-    #
-    def get_pair_frequency(self,tokens):
-      #tokens:["lower","lowest","low"]
-      #"low" freq:3 and "er"freq:1
-        pair_frequecny={}
-        for token in tokens:
-            for i in range(len(token)-1):
-                pair=(token[i],token[i+1])
-                if pair not in pair_frequecny:
-                    pair_frequecny[pair]=0
-                pair_frequecny[pair]+=1
-        return pair_frequecny
-    #now we will merge the pair that appear most frequently
-    #
+   
+    def get_pair_frequency(self, tokens):
+        pair_frequency = {}
+
+        for i in range(len(tokens) - 1):
+            pair = (tokens[i], tokens[i + 1])
+
+            if pair not in pair_frequency:
+                pair_frequency[pair] = 0
+
+            pair_frequency[pair] += 1
+
+        return pair_frequency
+   
 
     def get_most_frequent_pair(self,pair_frequecny):
         max_freq=0
@@ -91,10 +97,8 @@ class Tokenizer:
 
 #testing
 tokenizer=Tokenizer()
-tokenizer.train("hello world")
+print("for hello hello hello ")
+tokenizer.train("hello hello hello", num_merges=5)
 print(tokenizer.vocab)
 print(tokenizer.inverse_vocab)
-encoded = tokenizer.encode("hello world")
 
-print(encoded)
-print(tokenizer.decode(encoded))
