@@ -8,3 +8,5 @@ In large language models (LLMs), BPE stands for Byte Pair Encoding. It is a subw
 
 for example: Unbelievable
 is broken into un+ believe + able these is bpe.....
+<img width="567" height="201" alt="image" src="https://github.com/user-attachments/assets/9aa720d1-1a0d-41ec-be6e-22dd106c6f44" />
+
